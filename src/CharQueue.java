@@ -41,7 +41,7 @@ public class CharQueue {
      * @throws IllegalArgumentException if capacity is out of valid range (i.e. less than 1)
      */
     public CharQueue(int capacity) throws IllegalArgumentException {
-        //if (capacity < 1) throw IllegalArgumentException;
+        if (capacity < 1) throw new IllegalArgumentException();
         circularArray = new char[capacity];
         length = 0;
         front = 0;
@@ -54,10 +54,7 @@ public class CharQueue {
      * @return Returns true if it is empty, false otherwise.
      */
     public boolean isEmpty() {
-        if (rear == front) {
-            return true;
-        }
-        return false;
+        return length == 0;
     }
 
     /**
@@ -72,8 +69,7 @@ public class CharQueue {
      * Clears all elements in the queue.
      */
     public void clear() {
-        CharQueue tempQueue = new CharQueue(this.queueCapacity);
-        this.circularArray = tempQueue.circularArray;
+        this.circularArray = new char[queueCapacity];
         this.length = 0;
         this.front = 0;
         this.rear = 0;
@@ -89,7 +85,7 @@ public class CharQueue {
     public void enqueue(char elem) {
         if (this.length == this.queueCapacity) {
             CharQueue tempQueue = new CharQueue(this.queueCapacity*QUEUE_DOUBLER);
-            this.enqueueLimit = this.queueCapacity + 1;
+            this.enqueueLimit = this.queueCapacity;
             this.enqueueCounter = 0;
             //loop to get the right order in new array
                 //start iterating from front to capacity, change iterator to rear, iterate up
@@ -145,10 +141,7 @@ public class CharQueue {
      * @throws NoSuchElementException if the queue is empty
      */
     public char peek() {
-//        if (this.length == 0) {
-//            //edit new if doesnt work
-//            throw new NoSuchElementException;
-//        }
+        if (this.length == 0) throw new NoSuchElementException();
         return this.circularArray[this.front];
     }
 
@@ -158,10 +151,7 @@ public class CharQueue {
      * @throws NoSuchElementException if the queue is empty
      */
     public char dequeue() {
-//        if (this.length == 0) {
-//            //edit new if doesnt work
-//            throw new NoSuchElementException;
-//        }
+        if (this.length == 0) throw new NoSuchElementException();
         char toReturn = this.circularArray[this.front];
         this.circularArray[this.front] = 0;
 
@@ -172,5 +162,80 @@ public class CharQueue {
         }
         this.length -= 1;
         return toReturn;
+    }
+
+    public static void main(String[] args) {
+        CharQueue queue = new CharQueue(3);
+
+        System.out.println("isEmpty() before adding elements: " + queue.isEmpty());
+        System.out.println("size() before adding elements: " + queue.size());
+
+        queue.enqueue('a');
+        queue.enqueue('b');
+        queue.enqueue('c');
+
+        System.out.println("isEmpty() after adding elements: " + queue.isEmpty());
+        System.out.println("size() after adding elements: " + queue.size());
+
+        System.out.println("peek() result: " + queue.peek());
+
+        char dequeued = queue.dequeue();
+        System.out.println("dequeue() result: " + dequeued);
+
+        System.out.println("size() after dequeuing: " + queue.size());
+
+        queue.clear();
+
+        System.out.println("isEmpty() after clearing: " + queue.isEmpty());
+        System.out.println("size() after clearing: " + queue.size());
+
+        CharQueue queue1 = new CharQueue(5);
+
+        // add elements to the queue, causing it to wrap around
+        queue1.enqueue('a');
+        queue1.enqueue('b');
+        queue1.enqueue('c');
+        queue1.enqueue('d');
+        queue1.enqueue('e');
+        queue1.dequeue();
+        queue1.dequeue();
+        queue1.enqueue('f');
+        queue1.enqueue('g');
+        queue1.enqueue('h');
+        queue1.enqueue('i');
+        queue1.enqueue('j');
+
+        // assert that the queue has the correct size and elements
+        assert queue1.size() == 8;
+        assert queue1.dequeue() == 'c';
+        assert queue1.dequeue() == 'd';
+        assert queue1.dequeue() == 'e';
+        assert queue1.dequeue() == 'f';
+        assert queue1.dequeue() == 'g';
+        assert queue1.dequeue() == 'h';
+        assert queue1.dequeue() == 'i';
+        assert queue1.dequeue() == 'j';
+
+        // clear the queue and add elements until it needs to be resized
+        System.out.println("q1 size() after asserts: " + queue1.size());
+        queue1.clear();
+        System.out.println("q1 size() after clear: " + queue1.size());
+        for (int i = 0; i < 10; i++) {
+            queue1.enqueue((char) ('a' + i));
+        }
+
+        // assert that the queue has the correct size and elements
+        assert queue1.size() == 10;
+        assert queue1.dequeue() == 'a';
+        assert queue1.dequeue() == 'b';
+        assert queue1.dequeue() == 'c';
+        assert queue1.dequeue() == 'd';
+        assert queue1.dequeue() == 'e';
+        assert queue1.dequeue() == 'f';
+        assert queue1.dequeue() == 'g';
+        assert queue1.dequeue() == 'h';
+        assert queue1.dequeue() == 'i';
+        assert queue1.dequeue() == 'j';
+
     }
 }
