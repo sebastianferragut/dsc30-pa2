@@ -183,7 +183,6 @@ public class CharQueue {
 
     /**
      * Returns queue capacity
-     *
      * @return int queue capacity
      */
     public int getQueueCapacity() {
@@ -192,14 +191,11 @@ public class CharQueue {
 
     /**
      * Returns string representation of the circularArray
-     *
      * @return string version of variable circularArray
      */
     @Override
     public String toString() {
-        return "CharQueue{" +
-                "circularArray=" + Arrays.toString(circularArray) +
-                '}';
+        return Arrays.toString(circularArray);
     }
 
 }

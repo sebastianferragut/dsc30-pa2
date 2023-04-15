@@ -8,13 +8,11 @@ public class CharQueueTest {
     @org.junit.jupiter.api.Test
     public void constructorTest() {
         CharQueue queue = new CharQueue();
-        //3 asserts for this, isEmpty, size, peek
         Assertions.assertTrue(queue.isEmpty());
         queue.enqueue('a');
         Assertions.assertEquals(1, queue.size());
         Assertions.assertEquals('a', queue.peek());
 
-        //3 asserts, Exception, size, isEmpty
         CharQueue queueResize = new CharQueue(2);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             CharQueue queueResizeAssert = new CharQueue(0);
@@ -68,18 +66,16 @@ public class CharQueueTest {
         queue.enqueue('c');
         queue.dequeue();
         queue.enqueue('z');
-        Assertions.assertEquals("CharQueue{circularArray=[z, b, c]}", queue.toString());
+        Assertions.assertEquals("[z, b, c]", queue.toString());
 
         CharQueue queueResize = new CharQueue(2);
         queueResize.enqueue('a');
         queueResize.enqueue('b');
         queueResize.enqueue('c');
         Assertions.assertEquals(4, queueResize.getQueueCapacity());
-        Assertions.assertEquals("CharQueue{circularArray=[a, b, c, \u0000]}",
-                queueResize.toString());
+        Assertions.assertEquals("[a, b, c, \u0000]", queueResize.toString());
         queueResize.enqueue('d');
-        Assertions.assertEquals("CharQueue{circularArray=[a, b, c, d]}",
-                queueResize.toString());
+        Assertions.assertEquals("[a, b, c, d]", queueResize.toString());
         Assertions.assertEquals(4, queueResize.size());
 
     }
@@ -118,14 +114,11 @@ public class CharQueueTest {
     @Test
     public void testToString() {
         CharQueue queue = new CharQueue();
-        Assertions.assertEquals("CharQueue{circularArray=[\u0000, " +
-                "\u0000, \u0000, \u0000, \u0000]}", queue.toString());
+        Assertions.assertEquals("[\u0000, \u0000, \u0000, \u0000, \u0000]", queue.toString());
         queue.enqueue('a');
-        Assertions.assertEquals("CharQueue{circularArray=[a, " +
-                "\u0000, \u0000, \u0000, \u0000]}", queue.toString());
+        Assertions.assertEquals("[a, \u0000, \u0000, \u0000, \u0000]", queue.toString());
         queue.enqueue('b');
-        Assertions.assertEquals("CharQueue{circularArray=[a, " +
-                "b, \u0000, \u0000, \u0000]}", queue.toString());
+        Assertions.assertEquals("[a, b, \u0000, \u0000, \u0000]", queue.toString());
     }
 
     @Test
@@ -137,4 +130,5 @@ public class CharQueueTest {
         CharQueue queueThree = new CharQueue();
         Assertions.assertEquals(5, queueThree.getQueueCapacity());
     }
+
 }
